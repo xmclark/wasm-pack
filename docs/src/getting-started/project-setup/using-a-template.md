@@ -15,6 +15,7 @@ cargo generate --git https://github.com/rustwasm/wasm-pack-template
 ```
 
 You will be prompted to give your project a name. Once you do, you will have a directory
-with a new project, ready to go.
+with a new project, ready to go. We'll talk about what's been included in this template
+further in this guide.
 
 [rustwasm wasm-pack-template]: https://github.com/rustwasm/wasm-pack-template
