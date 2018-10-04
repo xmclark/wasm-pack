@@ -15,6 +15,7 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use std::time::Instant;
 use PBAR;
+use command::utils::canonicalize_path;
 
 /// Everything required to configure and run the `wasm-pack init` command.
 pub(crate) struct Build {
@@ -141,7 +142,7 @@ impl Build {
         PBAR.message(&format!(
             "{} Your wasm pkg is ready to publish at {:#?}.",
             emoji::PACKAGE,
-            self.out_dir.canonicalize().unwrap_or(self.out_dir.clone())
+            canonicalize_path(self.out_dir.clone()).unwrap_or(self.out_dir.clone())
         ));
         Ok(())
     }
