@@ -2,6 +2,7 @@
 
 use bindgen;
 use build;
+use command::utils::canonicalize_path;
 use command::utils::{create_pkg_dir, set_crate_path};
 use emoji;
 use error::Error;
@@ -15,7 +16,6 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use std::time::Instant;
 use PBAR;
-use command::utils::canonicalize_path;
 
 /// Everything required to configure and run the `wasm-pack init` command.
 pub(crate) struct Build {

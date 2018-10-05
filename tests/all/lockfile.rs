@@ -27,8 +27,7 @@ fn it_gets_wasm_bindgen_version_in_crate_inside_workspace() {
                 [workspace]
                 members = ["./blah"]
             "#,
-        )
-        .file(
+        ).file(
             "blah/Cargo.toml",
             r#"
                 [package]
@@ -45,8 +44,7 @@ fn it_gets_wasm_bindgen_version_in_crate_inside_workspace() {
                 [dependencies]
                 wasm-bindgen = "=0.2.21"
             "#,
-        )
-        .file(
+        ).file(
             "blah/src/lib.rs",
             r#"
                 extern crate wasm_bindgen;
@@ -71,8 +69,7 @@ fn it_gets_wasm_bindgen_version_from_dependencies() {
                 [workspace]
                 members = ["./parent", "./child"]
             "#,
-        )
-        .file(
+        ).file(
             "child/Cargo.toml",
             r#"
                 [package]
@@ -89,8 +86,7 @@ fn it_gets_wasm_bindgen_version_from_dependencies() {
                 [dependencies]
                 wasm-bindgen = "=0.2.21"
             "#,
-        )
-        .file(
+        ).file(
             "child/src/lib.rs",
             r#"
                 extern crate wasm_bindgen;
@@ -99,8 +95,7 @@ fn it_gets_wasm_bindgen_version_from_dependencies() {
                 #[wasm_bindgen]
                 pub fn hello() -> u32 { 42 }
             "#,
-        )
-        .file(
+        ).file(
             "parent/Cargo.toml",
             r#"
                 [package]
@@ -114,8 +109,7 @@ fn it_gets_wasm_bindgen_version_from_dependencies() {
                 [lib]
                 crate-type = ["cdylib"]
             "#,
-        )
-        .file(
+        ).file(
             "parent/src/lib.rs",
             r#"
                 // Just re-export all of `child`.
