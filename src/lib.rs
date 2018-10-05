@@ -3,6 +3,8 @@
 #![deny(missing_docs)]
 
 extern crate cargo_metadata;
+#[macro_use]
+extern crate cfg_if;
 extern crate console;
 extern crate curl;
 #[macro_use]

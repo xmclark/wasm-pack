@@ -43,18 +43,28 @@ fn is_pkg_directory(path: &Path) -> bool {
     path.exists() && path.is_dir() && path.ends_with("pkg")
 }
 
-
-/// Strips UNC from canonical path on Windows.
-/// See https://github.com/rust-lang/rust/issues/42869 for why this is needed.
-pub fn canonicalize_path(path: PathBuf) -> Result<PathBuf, Error> {
-    let canonical = path.canonicalize()?;
-    if cfg!(windows) {
-        use std::ffi::OsString;
-        use std::os::windows::prelude::*;
-        let vec_chars = canonical.as_os_str().encode_wide().collect::<Vec<u16>>();
-        if vec_chars[0..4] == [92, 92, 63, 92] {
-            return Ok(Path::new(&OsString::from_wide(&vec_chars[4..])).to_owned());
+cfg_if! {
+    if #[cfg(windows)] {
+        /// Strips UNC from canonical path on Windows.
+        /// See https://github.com/rust-lang/rust/issues/42869 for why this is needed.
+        pub fn canonicalize_path(path: PathBuf) -> Result<PathBuf, Error> {
+            use std::ffi::OsString;
+            use std::os::windows::prelude::*;
+            let canonical = path.canonicalize()?;
+            let vec_chars = canonical.as_os_str().encode_wide().collect::<Vec<u16>>();
+            if vec_chars[0..4] == [92, 92, 63, 92] {
+                Ok(Path::new(&OsString::from_wide(&vec_chars[4..])).to_owned())
+            }
+            else {
+                Ok(canonical)
+            }
         }
     }
-    Ok(canonical)
+    else {
+        /// Strips UNC from canonical path on Windows.
+        pub fn canonicalize_path(path: PathBuf) -> Result<PathBuf, Error> {
+            let canonical = path.canonicalize()?;
+            Ok(canonical)
+        }
+    }
 }
