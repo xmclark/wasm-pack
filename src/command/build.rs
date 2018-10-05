@@ -2,6 +2,7 @@
 
 use bindgen;
 use build;
+use command::utils::canonicalize_path;
 use command::utils::{create_pkg_dir, set_crate_path};
 use emoji;
 use error::Error;
@@ -141,7 +142,7 @@ impl Build {
         PBAR.message(&format!(
             "{} Your wasm pkg is ready to publish at {:#?}.",
             emoji::PACKAGE,
-            self.out_dir.canonicalize().unwrap_or(self.out_dir.clone())
+            canonicalize_path(self.out_dir.clone()).unwrap_or(self.out_dir.clone())
         ));
         Ok(())
     }
