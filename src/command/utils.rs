@@ -9,7 +9,7 @@ use PBAR;
 
 /// If an explicit path is given, then use it, otherwise assume the current
 /// directory is the crate path.
-pub fn set_crate_path(path: Option<PathBuf>) -> Result<PathBuf, Error> {
+pub fn set_crate_path(path: Option<PathBuf>) -> Result<PathBuf, failure::Error> {
     let crate_path = match path {
         Some(p) => p,
         None => PathBuf::from("."),
@@ -47,7 +47,7 @@ cfg_if! {
     if #[cfg(windows)] {
         /// Strips UNC from canonical path on Windows.
         /// See https://github.com/rust-lang/rust/issues/42869 for why this is needed.
-        pub fn canonicalize_path(path: PathBuf) -> Result<PathBuf, Error> {
+        pub fn canonicalize_path(path: PathBuf) -> Result<PathBuf, failure::Error> {
             use std::ffi::OsString;
             use std::os::windows::prelude::*;
             let canonical = path.canonicalize()?;
@@ -61,8 +61,8 @@ cfg_if! {
         }
     }
     else {
-        /// Strips UNC from canonical path on Windows.
-        pub fn canonicalize_path(path: PathBuf) -> Result<PathBuf, Error> {
+        /// Pass path buf through to std canonicalize.
+        pub fn canonicalize_path(path: PathBuf) -> Result<PathBuf, failure::Error> {
             let canonical = path.canonicalize()?;
             Ok(canonical)
         }
