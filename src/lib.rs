@@ -26,6 +26,7 @@ extern crate slog_term;
 extern crate tar;
 extern crate toml;
 extern crate which;
+extern crate winapi;
 extern crate zip;
 
 pub mod binaries;

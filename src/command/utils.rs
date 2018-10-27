@@ -6,6 +6,9 @@ use progressbar::Step;
 use std::fs;
 use std::path::{Path, PathBuf};
 use PBAR;
+use winapi;
+use std::ffi::CString;
+use std::os::raw::c_char;
 
 /// If an explicit path is given, then use it, otherwise assume the current
 /// directory is the crate path.
@@ -31,7 +34,6 @@ pub fn find_pkg_directory(path: &Path) -> Option<PathBuf> {
     if is_pkg_directory(path) {
         return Some(path.to_owned());
     }
-
     path.read_dir().ok().and_then(|entries| {
         entries
             .filter_map(|x| x.ok().map(|v| v.path()))
@@ -41,6 +43,17 @@ pub fn find_pkg_directory(path: &Path) -> Option<PathBuf> {
 
 fn is_pkg_directory(path: &Path) -> bool {
     path.exists() && path.is_dir() && path.ends_with("pkg")
+}
+
+
+/// docs
+pub fn get_absolute_path_windows(path_buf: PathBuf) {
+    unsafe {
+        let c_string_path: CString = CString::new(path_buf.to_str().unwrap()).unwrap();
+//        let os_path = pathBuf.into_os_string();
+//        let os_path_ptr = os_path.as_os_str() as *const char;
+        let pathName = winapi::um::fileapi::GetFullPathNameA(c_string_path, 0, 0, 0);
+    }
 }
 
 cfg_if! {
